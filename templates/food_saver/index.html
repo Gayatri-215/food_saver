@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="relative overflow-hidden pt-16 pb-32">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="text-center">
+            <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-gray-900 mb-6">
+                Save Food. <span class="text-green-eco">Feed Souls.</span>
+            </h1>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto mb-10">
+                A bridge between surplus food and those who need it most. Join our community of donors, NGOs, and
+                volunteers to minimize wastage and maximize impact.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="{% url 'register' %}"
+                    class="bg-green-eco text-white px-8 py-4 rounded-full text-lg font-bold btn-premium shadow-lg">Start
+                    Donating Now</a>
+            </div>
+        </div>
+
+        <div class="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 btn-premium">
+                <div class="w-12 h-12 bg-green-50 rounded-2xl flex items-center justify-center text-green-eco mb-6">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                        </path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold mb-3">Donors</h3>
+                <p class="text-gray-500">Restaurants, hotels, or households can upload surplus food in seconds.</p>
+            </div>
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 btn-premium">
+                <div class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 mb-6">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                        </path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold mb-3">NGOs</h3>
+                <p class="text-gray-500">Find and claim nearby food donations instantly to serve your community.</p>
+            </div>
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 btn-premium">
+                <div class="w-12 h-12 bg-orange-50 rounded-2xl flex items-center justify-center text-orange-500 mb-6">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold mb-3">Volunteers</h3>
+                <p class="text-gray-500">Connect with NGOs to help transport food from donors to recipients.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Background Decoration -->
+    <div
+        class="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[600px] h-[600px] bg-green-100 rounded-full blur-3xl opacity-50 z-0">
+    </div>
+    <div
+        class="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-green-200 rounded-full blur-3xl opacity-30 z-0">
+    </div>
+</div>
+{% endblock %}

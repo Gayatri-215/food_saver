@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-12">
+    <div class="mb-12">
+        <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight">Admin Oversight Panel</h1>
+        <p class="text-gray-500 mt-2">Monitoring system-wide impact and user activity.</p>
+    </div>
+
+    <!-- Global Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <div class="bg-indigo-600 p-8 rounded-3xl text-white shadow-xl">
+            <p class="text-indigo-100 text-sm font-medium uppercase tracking-wider mb-2">Platform Users</p>
+            <p class="text-4xl font-bold">{{ total_users }}</p>
+        </div>
+        <div class="bg-emerald-600 p-8 rounded-3xl text-white shadow-xl">
+            <p class="text-emerald-100 text-sm font-medium uppercase tracking-wider mb-2">Total Donations</p>
+            <p class="text-4xl font-bold">{{ total_donations }}</p>
+        </div>
+        <div class="bg-amber-600 p-8 rounded-3xl text-white shadow-xl">
+            <p class="text-amber-100 text-sm font-medium uppercase tracking-wider mb-2">Successful Deliveries</p>
+            <p class="text-4xl font-bold">{{ total_delivered }}</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <!-- User Management -->
+        <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="px-8 py-6 border-b border-gray-50 flex justify-between items-center bg-gray-50/50">
+                <h2 class="text-xl font-bold text-gray-800">Recent Users</h2>
+                <button class="text-indigo-600 font-bold text-sm hover:underline">View All</button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <tbody class="divide-y divide-gray-50">
+                        {% for user in all_users %}
+                        <tr class="hover:bg-gray-50 transition-colors">
+                            <td class="px-8 py-4">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold">
+                                        {{ user.username|first|upper }}</div>
+                                    <div>
+                                        <p class="text-sm font-bold text-gray-900">{{ user.username }}</p>
+                                        <p class="text-[10px] text-gray-400 font-medium">{{ user.email }}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-8 py-4">
+                                <span class="text-xs font-bold uppercase py-1 px-3 rounded-full 
+                                {% if user.role == 'donor' %}bg-green-50 text-green-700
+                                {% elif user.role == 'ngo' %}bg-blue-50 text-blue-700
+                                {% else %}bg-orange-50 text-orange-700{% endif %}">
+                                    {{ user.role }}
+                                </span>
+                            </td>
+                            <td class="px-8 py-4 text-right">
+                                <form action="{% url 'toggle_fraud' user.id %}" method="POST" class="inline">
+                                    {% csrf_token %}
+                                    <button type="submit"
+                                        class="text-xs font-bold px-3 py-1 rounded-full {% if user.is_fraudulent %}bg-red-100 text-red-700 hover:bg-red-200{% else %}bg-gray-100 text-gray-600 hover:bg-gray-200{% endif %}">
+                                        {% if user.is_fraudulent %}Flagged as Fraud{% else %}Mark Fraud{% endif %}
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Donation Oversight -->
+        <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="px-8 py-6 border-b border-gray-50 flex justify-between items-center bg-gray-50/50">
+                <h2 class="text-xl font-bold text-gray-800">Latest Donations</h2>
+                <button class="text-emerald-600 font-bold text-sm hover:underline">Full Logs</button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <tbody class="divide-y divide-gray-50">
+                        {% for donation in recent_donations %}
+                        <tr class="hover:bg-gray-50 transition-colors">
+                            <td class="px-8 py-4">
+                                <p class="text-sm font-bold text-gray-900">{{ donation.name }}</p>
+                                <p class="text-[10px] text-gray-400 font-medium">Donor: {{ donation.donor.username }}
+                                </p>
+                            </td>
+
+                            <td class="px-8 py-4 text-right">
+                                <span class="text-xs text-gray-400 italic">{{ donation.created_at|timesince }}
+                                    ago</span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

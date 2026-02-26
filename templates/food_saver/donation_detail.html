@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-12">
+    <div class="mb-8">
+        <a href="{% url 'dashboard' %}" class="text-green-eco font-bold flex items-center gap-2 hover:underline mb-6">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            Back to Dashboard
+        </a>
+        <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight">{{ donation.name }}</h1>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div class="space-y-8">
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
+                <h2 class="text-xl font-bold text-gray-800 mb-6">Donation Details</h2>
+                <div class="space-y-4 text-sm">
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-500">Food Type</span>
+                        <span class="font-bold uppercase">{{ donation.food_type }}</span>
+                    </div>
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-500">Quantity</span>
+                        <span class="font-bold">{{ donation.quantity }}</span>
+                    </div>
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-500">Prepared At</span>
+                        <span class="font-bold">{{ donation.preparation_time|date:"DATETIME_FORMAT" }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">Donor Information</h2>
+                <p class="font-bold text-gray-900">{{ donation.donor.username }}</p>
+                <p class="text-sm text-gray-500 mt-1">{{ donation.donor.phone|default:"No phone provided" }}</p>
+                <p class="text-sm text-gray-500 mt-1">{{ donation.address|default:"No pickup address provided" }}</p>
+            </div>
+        </div>
+
+        <div class="space-y-8">
+            {% if donation.special_instructions %}
+            <div class="bg-emerald-50 p-8 rounded-3xl border border-emerald-100">
+                <h2 class="text-xl font-bold text-emerald-800 mb-4">Special Instructions</h2>
+                <p class="text-emerald-700 leading-relaxed italic">"{{ donation.special_instructions }}"</p>
+            </div>
+            {% endif %}
+
+            <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden h-80 relative">
+                <div id="detail-map" class="w-full h-full bg-slate-100 flex items-center justify-center">
+                    <div class="text-center p-8">
+                        <svg class="w-12 h-12 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7">
+                            </path>
+                        </svg>
+                        <p class="text-gray-400 text-xs">Loading Pickup Location...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4 text-center">
+                <p class="text-gray-500 font-medium">Pickup Coordinates</p>
+                <p class="text-xs text-gray-400 mt-1">{{ donation.location_lat }}, {{ donation.location_lng }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const mapDiv = document.getElementById('detail-map');
+
+        mapDiv.innerHTML = `
+            <div class="relative w-full h-full bg-[#e5e3df] overflow-hidden">
+                <div class="absolute inset-0 opacity-10" style="background-image: linear-gradient(#444 1px, transparent 1px), linear-gradient(90deg, #444 1px, transparent 1px); background-size: 40px 40px;"></div>
+                
+                <!-- Donor Location Marker -->
+                <div class="absolute" style="top: 50%; left: 50%; transform: translate(-50%, -100%);">
+                    <div class="relative">
+                        <div class="w-10 h-10 bg-green-eco rounded-full border-4 border-white shadow-xl flex items-center justify-center text-white">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a2 2 0 012-2h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1z"></path></svg>
+                        </div>
+                        <div class="absolute top-12 left-1/2 -translate-x-1/2 whitespace-nowrap bg-black text-white text-[10px] px-2 py-1 rounded font-bold uppercase">Pickup Point</div>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+</script>
+{% endblock %}
